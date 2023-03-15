@@ -28,7 +28,7 @@ int __debugf(const char *myself, const char *fmt, ...) {
 	va_start(vl, fmt);
 	vsnprintf(buffer, sizeof(buffer), fmt, vl);
 	va_end(vl);
-	return fprintf(stderr, "\33[1m\%32s\33[0m - %s\n", myself, buffer);
+	return fprintf(stderr, "\33[1m%32s\33[0m - %s\n", myself, buffer);
 }
 
 /*
