@@ -104,7 +104,7 @@ static int calculate_hash(char *key) {
 	return sum % HASHTABLE_NODE_ARRAY_SIZE;
 }
 
-void hashtable_destroy_recursive_free_node(hashtable_node_t *node) {
+void hashtable_destroy_node_recursively(hashtable_node_t *node) {
 	if(node->next) {
 		hashtable_destroy_recursive_free_node(node->next);
 	}
@@ -118,7 +118,7 @@ void hashtable_destroy(hashtable_t *ht) {
 	}
 	for(int i = 0; i < HASHTABLE_NODE_ARRAY_SIZE; ++i) {
 		if(ht->array[i]) {
-			hashtable_destroy_recursive_free_node(ht->array[i]);
+			hashtable_destroy_node_recursively(ht->array[i]);
 		}
 	}
 	free(ht);
