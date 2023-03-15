@@ -86,13 +86,6 @@ hashtable_node_t *hashtable_node_create(char *key, int value) {
 	return aux;
 }
 
-hashtable_node_t *hashtable_node_init(hashtable_node_t *n, char *key, int value) {
-	strncpy(n->key, key, HASHTABLE_KEY_SIZE);
-	n->value = value;
-	n->next = NULL;
-	return n;
-}
-
 /*
 	hashtable_t
 */
