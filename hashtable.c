@@ -106,7 +106,7 @@ static int calculate_hash(char *key) {
 
 void hashtable_destroy_node_recursively(hashtable_node_t *node) {
 	if(node->next) {
-		hashtable_destroy_recursive_free_node(node->next);
+		hashtable_destroy_node_recursively(node->next);
 	}
 	debugf("Destroying node for key '%s'", node->key);
 	hashtable_node_destroy(node);
