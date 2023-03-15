@@ -35,7 +35,6 @@ int __debugf(const char *myself, const char *fmt, ...) {
 	hashtable_node_t
 */
 
-#define HASHTABLE_NODE_COUNT	100
 #define HASHTABLE_KEY_SIZE		32
 
 typedef struct hashtable_node_t {
@@ -70,7 +69,8 @@ hashtable_node_t *hashtable_node_find_by_key(hashtable_node_t *node, char *key) 
 	return NULL;
 }
 
-void hashtable_node_free(hashtable_node_t *node) {
+void hashtable_node_destroy(hashtable_node_t *node) {
+	debugf("Destroying node with key '%s', value %d", node->key, node->value);
 	free(node);
 }
 
@@ -90,8 +90,10 @@ hashtable_node_t *hashtable_node_create(char *key, int value) {
 	hashtable_t
 */
 
+#define HASHTABLE_NODE_ARRAY_SIZE	100
+
 typedef struct hashtable_t {
-	hashtable_node_t *array[HASHTABLE_NODE_COUNT];
+	hashtable_node_t *array[HASHTABLE_NODE_ARRAY_SIZE];
 } hashtable_t;
 
 static int calculate_hash(char *key) {
@@ -99,14 +101,26 @@ static int calculate_hash(char *key) {
 	for(int i = 0; key[i] && i < HASHTABLE_KEY_SIZE; ++i) {
 		sum += key[i];
 	}
-	return sum % HASHTABLE_NODE_COUNT;
+	return sum % HASHTABLE_NODE_ARRAY_SIZE;
+}
+
+void hashtable_destroy_recursive_free_node(hashtable_node_t *node) {
+	if(node->next) {
+		hashtable_destroy_recursive_free_node(node->next);
+	}
+	debugf("Destroying node for key '%s'", node->key);
+	hashtable_node_destroy(node);
 }
 
 void hashtable_destroy(hashtable_t *ht) {
 	if(!ht) {
 		debugf("Cannot free a NULL hashtable");
 	}
-	// FIX
+	for(int i = 0; i < HASHTABLE_NODE_ARRAY_SIZE; ++i) {
+		if(ht->array[i]) {
+			hashtable_destroy_recursive_free_node(ht->array[i]);
+		}
+	}
 	free(ht);
 }
 
