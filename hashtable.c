@@ -157,8 +157,8 @@ int hashtable_set(hashtable_t *ht, char *key, int value) {
 		return -1;
 	}
 	if(ht->array[hash] == NULL) {
-		debugf("Empty hash slot for %d. Setting value %s for key '%d'",
-			hash, key, value);
+		debugf("Empty hash slot for %d. Setting value %d for key '%s'",
+			hash, value, key);
 		ht->array[hash] = node;
 		return 0;
 	}
