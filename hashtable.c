@@ -168,7 +168,7 @@ int hashtable_set(hashtable_t *ht, char *key, int value) {
 			key, ht->array[hash], value);
 		hashtable_node_insert(ht->array[hash], node);
 	} else {
-		debugf("Found node for key %s' at %p. Seting value %d to it", found, value);
+		debugf("Found node for key %s' at %p. Setting value %d to it", found, value);
 		found->value = value;
 	}
 	return 0;
